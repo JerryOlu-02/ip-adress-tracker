@@ -177,9 +177,12 @@ body {
     gap: 20px;
     width: 90%;
 
+    position: relative;
     bottom: unset;
-    top: 70%;
-    left: 5%;
+    top: unset;
+    right: unset;
+    left: unset;
+    margin-bottom: 20px;
     transform: unset;
   }
 
@@ -192,11 +195,5 @@ body {
 
   .ip--div > div::before {
     width: 0;
-  }
-}
-
-@media (max-width: 400px) {
-  .ip--div {
-    top: 50%;
   }
 }
