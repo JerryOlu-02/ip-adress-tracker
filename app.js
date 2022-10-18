@@ -47,9 +47,8 @@ class App {
 
   async _getApi() {
     try {
-      const ipValue = ipText.value;
       const geoIpfy = await fetch(
-        `https://geo.ipify.org/api/v2/country,city?apiKey=at_YBUZusorUE31nMICnPdMYH9CS9qVC&ipAddress=${ipValue}`
+        `https://geo.ipify.org/api/v2/country,city?apiKey=at_YBUZusorUE31nMICnPdMYH9CS9qVC&ipAddress=${ipText.value}`
       );
       if (!geoIpfy.ok) throw new Error('API call Limit Reached');
       const data = await geoIpfy.json();
