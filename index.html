@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.2/leaflet.css"
+      integrity="sha512-UkezATkM8unVC0R/Z9Kmq4gorjNoFwLMAWR/1yZpINW08I79jEKx/c8NlLSvvimcu7SL8pgeOnynxfRpe+5QpA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Frontend Mentor | IP Address Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.2/leaflet.js"
+      integrity="sha512-KMraOVM0qMVE0U1OULTpYO4gg5MZgazwPAPyMQWfOkEshpwlLQFCHZ/0lBXyviDNVL+pBGwmeXQnuvGK8Fscvg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body class="flex">
+    <main class="main">
+      <section class="section--1 flex--col">
+        <h2>IP Address Tracker</h2>
+
+        <div class="input--div flex">
+          <input
+            class="text--input"
+            type="text"
+            value=""
+            placeholder="Search for any IP address or domain"
+          />
+          <button class="btn"></button>
+        </div>
+
+        <div class="flex ip--div">
+          <div class="flex--col">
+            <p>IP ADDRESS</p>
+            <h2 class="ip--address">192.212.174.101</h2>
+          </div>
+
+          <div class="flex--col">
+            <p>LOCATION</p>
+            <h2 class="location">
+              Brooklyn, NY <br />
+              10001
+            </h2>
+          </div>
+
+          <div class="flex--col">
+            <p>TIMEZONE</p>
+            <h2 class="timezone">UTC <span>05:00</span></h2>
+          </div>
+
+          <div class="flex--col">
+            <p>ISP</p>
+            <h2 class="isp">
+              SpaceX <br />
+              Starlink
+            </h2>
+          </div>
+        </div>
+
+        <div class="error--div inactive flex"></div>
+      </section>
+
+      <section id="map"></section>
+    </main>
+  </body>
+</html>
