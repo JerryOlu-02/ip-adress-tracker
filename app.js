@@ -102,6 +102,10 @@ class App {
     } catch (error) {
       console.log(error);
       this._renderError(error.message);
+
+      setTimeout(() => {
+        errorMsg.classList.add('inactive');
+      }, 5000);
     }
   }
 }
