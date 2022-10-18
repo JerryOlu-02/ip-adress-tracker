@@ -73,10 +73,8 @@ class App {
       const geoIpfy = await fetch(
         `https://geo.ipify.org/api/v2/country,city?apiKey=at_YBUZusorUE31nMICnPdMYH9CS9qVC&ipAddress=${ipText.value}`
       );
-      console.log(geoIpfy);
       if (!geoIpfy.ok) throw new Error('Could not Fetch');
       data = await geoIpfy.json();
-      console.log(data);
 
       // Get needed Data out of API
       let { ip: newIp, isp: newIsp, location: newLocation } = await data;
