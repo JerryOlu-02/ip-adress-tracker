@@ -111,7 +111,7 @@ class App {
   async _runApp() {
     try {
       await this._getApi();
-      await this._renderMap();
+      this._renderMap();
     } catch (error) {
       console.error(error.message);
     }
