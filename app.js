@@ -11,13 +11,12 @@ const errorMsg = document.querySelector('.error--div');
 class App {
   #map;
   #myIcon;
-  constructor(value) {
-    this.value = value;
-    window.addEventListener('load', this._getApi.bind(this));
-    btn.addEventListener('click', this._getApi.bind(this));
+  #lat;
+  #lng;
+  constructor() {
+    this._runApp();
+    btn.addEventListener('click', this._runApp.bind(this));
     ipText.addEventListener('keydown', this._runApi.bind(this));
-
-    // this._getApi();
   }
 
   _renderIP(ip, city, reg, post, zone, ispI) {
@@ -28,12 +27,6 @@ class App {
     isp.textContent = ispI;
   }
 
-  _getPosition() {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject);
-    });
-  }
-
   _renderError(err) {
     errorMsg.textContent = err;
     errorMsg.classList.remove('inactive');
@@ -41,21 +34,53 @@ class App {
 
   _runApi(e) {
     if (e.key !== 'Enter') return;
+    this._runApp();
+  }
 
-    this._getApi();
+  _renderMap() {
+    if (this.#map != undefined) {
+      this.#map.remove();
+    }
+    this.#map = L.map('map', {
+      center: [this.#lat, this.#lng],
+      zoom: 15,
+      boxZoom: false,
+      dragging: false,
+      doubleClickZoom: false,
+      scrollWheelZoom: false,
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(this.#map);
+
+    this.#myIcon = L.icon({
+      iconUrl: 'images/icon-location.svg',
+      iconSize: [35, 60],
+      iconAnchor: [22, 94],
+      popupAnchor: [-3, -76],
+    });
+
+    L.marker([this.#lat, this.#lng], { icon: this.#myIcon })
+      .addTo(this.#map)
+      .openPopup();
   }
 
   async _getApi() {
     try {
+      let data;
       const geoIpfy = await fetch(
         `https://geo.ipify.org/api/v2/country,city?apiKey=at_YBUZusorUE31nMICnPdMYH9CS9qVC&ipAddress=${ipText.value}`
       );
-      if (!geoIpfy.ok) throw new Error('API call Limit Reached');
-      const data = await geoIpfy.json();
+      console.log(geoIpfy);
+      if (!geoIpfy.ok) throw new Error('Could not Fetch');
+      data = await geoIpfy.json();
+      console.log(data);
 
       // Get needed Data out of API
-      const { ip: newIp, isp: newIsp, location: newLocation } = await data;
-      const {
+      let { ip: newIp, isp: newIsp, location: newLocation } = await data;
+      let {
         region: newRegion,
         timezone: newTimezone,
         postalCode: newPostalCode,
@@ -63,31 +88,8 @@ class App {
         lng: newLng,
         city: newCity,
       } = await newLocation;
-
-      this.#map = await L.map('map', {
-        center: [newLat, newLng],
-        zoom: 15,
-        boxZoom: false,
-        dragging: false,
-        doubleClickZoom: false,
-        scrollWheelZoom: false,
-      });
-
-      L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(this.#map);
-
-      this.#myIcon = L.icon({
-        iconUrl: 'images/icon-location.svg',
-        iconSize: [35, 60],
-        iconAnchor: [22, 94],
-        popupAnchor: [-3, -76],
-      });
-
-      await L.marker([newLat, newLng], { icon: this.#myIcon })
-        .addTo(this.#map)
-        .openPopup();
+      this.#lat = newLat;
+      this.#lng = newLng;
 
       // RENDER LOCATION
       this._renderIP(
@@ -107,6 +109,15 @@ class App {
       }, 5000);
     }
   }
+
+  async _runApp() {
+    try {
+      await this._getApi();
+      await this._renderMap();
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 }
 
-const app = new App('Space X');
+const app = new App();
