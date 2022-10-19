@@ -79,7 +79,6 @@ class App {
       );
       if (!geoIpfy.ok) throw new Error('Could not Fetch');
       data = await geoIpfy.json();
-      console.log(data);
 
       // Get needed Data out of API
       let { ip: newIp, isp: newIsp, location: newLocation } = await data;
