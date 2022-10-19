@@ -67,14 +67,19 @@ class App {
       .openPopup();
   }
 
-  async _getApi() {
+  _containsAnyLetters(str) {
+    return /[a-zA-Z]/.test(str);
+  }
+
+  async _chooseApi(method) {
     try {
       let data;
       const geoIpfy = await fetch(
-        `https://geo.ipify.org/api/v2/country,city?apiKey=at_YBUZusorUE31nMICnPdMYH9CS9qVC&ipAddress=${ipText.value}`
+        `https://geo.ipify.org/api/v2/country,city?apiKey=at_YBUZusorUE31nMICnPdMYH9CS9qVC&${method}=${ipText.value}`
       );
       if (!geoIpfy.ok) throw new Error('Could not Fetch');
       data = await geoIpfy.json();
+      console.log(data);
 
       // Get needed Data out of API
       let { ip: newIp, isp: newIsp, location: newLocation } = await data;
@@ -105,6 +110,14 @@ class App {
       setTimeout(() => {
         errorMsg.classList.add('inactive');
       }, 5000);
+    }
+  }
+
+  async _getApi() {
+    if (this._containsAnyLetters(ipText.value)) {
+      await this._chooseApi('domain');
+    } else {
+      await this._chooseApi('ipAddress');
     }
   }
 
